@@ -1,0 +1,58 @@
+@use "../abstracts" as *;
+
+// <x-modal>
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: token(spacing-md);
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    cursor: default;
+  }
+
+  &__dialog {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: token(spacing-lg);
+    width: 100%;
+    max-width: 520px;
+    max-height: calc(100vh - #{token(spacing-xl)});
+    padding: token(spacing-lg);
+    overflow-y: auto;
+    border-radius: token(radius-lg);
+    background-color: token(color-bg-surface);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+    animation: modal-in 0.2s ease-out;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: token(spacing-md);
+  }
+
+  &__thumbnail {
+    display: block;
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border: 1px solid token(color-border);
+    border-radius: token(radius-md);
+  }
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}

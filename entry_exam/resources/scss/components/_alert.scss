@@ -1,0 +1,19 @@
+@use "../abstracts" as *;
+
+// <x-alert type="success|error">
+
+.alert {
+  padding: token(spacing-sm) token(spacing-md);
+  border-radius: token(radius-md);
+  @include typography(body-2);
+
+  &--success {
+    background-color: token(color-success-bg);
+    color: token(color-success);
+  }
+
+  &--error {
+    background-color: token(color-danger-bg);
+    color: token(color-danger);
+  }
+}

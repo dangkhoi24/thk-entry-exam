@@ -1,3 +1,5 @@
+@use "../abstracts" as *;
+
 .container{
     .text{
         line-height: 30px;
@@ -32,6 +34,24 @@
             display: flex;
             .side-wrapper{
                 width: 50%;
+            }
+        }
+    }
+    @include down(md) {
+        .text,.area{
+            font-size: 17px;
+        }
+        .pref{
+            font-size: 16px;
+            line-height: 2;
+        }
+        .prefecture_container{
+            padding: token(spacing-md) token(spacing-md) token(spacing-xl);
+            .area_container{
+                flex-direction: column;
+                .side-wrapper{
+                    width: 100%;
+                }
             }
         }
     }

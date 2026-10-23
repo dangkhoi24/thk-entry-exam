@@ -1,0 +1,111 @@
+@use "sass:map";
+@use "../abstracts" as *;
+// library base styles first, the theme below overrides them
+@use "../../../node_modules/tom-select/dist/css/tom-select";
+
+// <x-select>: Tom Select themed like <x-input>
+// (Tom Select copies the "select" class onto its .ts-wrapper)
+
+$chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23616161' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+
+// before JS runs / without JS
+select.select {
+  width: 100%;
+  min-height: 40px;
+  padding: 0 token(spacing-xl) 0 token(spacing-md);
+  border: 1px solid token(color-border);
+  border-radius: token(radius-md);
+  background: token(color-bg-surface) $chevron no-repeat right token(spacing-md) center;
+  color: token(color-text);
+  font-family: inherit;
+  appearance: none;
+  @include typography(body-2);
+}
+
+.ts-wrapper.select {
+  width: 100%;
+
+  .ts-control {
+    flex-wrap: nowrap;
+    min-height: 40px;
+    padding: token(spacing-sm) token(spacing-xl) token(spacing-sm) token(spacing-md);
+    border: 1px solid token(color-border);
+    border-radius: token(radius-md);
+    background: token(color-bg-surface) $chevron no-repeat right token(spacing-md) center;
+    box-shadow: none;
+    color: token(color-text);
+    cursor: pointer;
+    @include typography(body-2);
+
+    &:hover {
+      border-color: token(color-border-strong);
+    }
+
+    .item {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  // search box inside the dropdown (dropdown_input plugin)
+  .dropdown-input-wrap {
+    padding: token(spacing-sm);
+    border-bottom: 1px solid token(color-border);
+  }
+
+  .dropdown-input {
+    width: 100%;
+    padding: token(spacing-xs) token(spacing-sm);
+    border: 1px solid token(color-border);
+    border-radius: token(radius-sm);
+    box-shadow: none;
+    @include typography(body-2);
+
+    &:focus {
+      border-color: token(color-primary);
+      outline: none;
+    }
+  }
+
+  // the arrow drawn by Tom Select itself
+  &.single .ts-control::after {
+    display: none;
+  }
+
+  &.focus .ts-control,
+  &.dropdown-active .ts-control {
+    border-color: token(color-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, token(color-primary) 20%, transparent);
+  }
+
+  .is-invalid & .ts-control {
+    border-color: token(color-danger);
+  }
+
+  .ts-dropdown {
+    margin-top: token(spacing-xs);
+    overflow: hidden;
+    border: 1px solid token(color-border);
+    border-radius: token(radius-md);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    @include typography(body-2);
+
+    .option {
+      padding: token(spacing-sm) token(spacing-md);
+    }
+
+    .active {
+      background-color: color-mix(in srgb, token(color-primary) 10%, transparent);
+      color: token(color-primary);
+    }
+
+    .selected {
+      font-weight: map.get($font-weight, semibold);
+    }
+  }
+
+  .ts-dropdown-content {
+    max-height: 280px;
+  }
+}

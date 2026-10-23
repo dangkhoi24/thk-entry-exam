@@ -1,0 +1,48 @@
+@use "../abstracts" as *;
+
+// <x-pagination>
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: token(spacing-sm);
+
+  &__pages {
+    display: flex;
+    align-items: center;
+    gap: token(spacing-xs);
+  }
+
+  &__item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 token(spacing-sm);
+    border-radius: token(radius-md);
+    color: token(color-text);
+    text-decoration: none;
+    @include typography(label-1);
+
+    &:hover {
+      background-color: token(color-bg-subtle);
+    }
+
+    &.is-current {
+      background-color: token(color-primary);
+      color: token(color-text-on-fill);
+    }
+
+    &.is-disabled {
+      color: token(color-text-placeholder);
+      pointer-events: none;
+    }
+  }
+
+  &__gap {
+    color: token(color-text-secondary);
+  }
+}

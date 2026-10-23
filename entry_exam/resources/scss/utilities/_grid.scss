@@ -1,0 +1,17 @@
+@use "../abstracts" as *;
+
+@mixin grid-utils($p: null) {
+  $s: "";
+  @if $p { $s: "#{$p}\\:"; }
+
+  @for $i from 1 through 4 {
+    .#{$s}grid-cols-#{$i} { grid-template-columns: repeat($i, minmax(0, 1fr)) !important; }
+    .#{$s}col-span-#{$i}  { grid-column: span $i / span $i !important; }
+  }
+}
+
+@include grid-utils;
+
+@each $p in (md, lg) {
+  @include up($p) { @include grid-utils($p); }
+}

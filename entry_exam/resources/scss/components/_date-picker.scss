@@ -1,0 +1,63 @@
+@use "sass:map";
+@use "../abstracts" as *;
+// library base styles first, the theme below overrides them
+@use "../../../node_modules/flatpickr/dist/flatpickr";
+
+// flatpickr calendar themed with tokens (input itself is <x-input data-date-picker>)
+
+.flatpickr-calendar {
+  border: 1px solid token(color-border);
+  border-radius: token(radius-lg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  font-family: inherit;
+
+  &::before,
+  &::after {
+    display: none;
+  }
+
+  .flatpickr-months {
+    padding-top: token(spacing-xs);
+  }
+
+  .flatpickr-current-month {
+    @include typography(body-1);
+    font-weight: map.get($font-weight, semibold);
+  }
+
+  .flatpickr-weekday {
+    color: token(color-text-secondary);
+    @include typography(caption-1);
+  }
+
+  .flatpickr-day {
+    border-radius: token(radius-md);
+    @include typography(label-1);
+    line-height: 39px;
+
+    &.today {
+      border-color: token(color-primary);
+    }
+
+    &:hover {
+      background-color: token(color-bg-subtle);
+      border-color: transparent;
+    }
+
+    &.selected,
+    &.selected:hover {
+      background-color: token(color-primary);
+      border-color: token(color-primary);
+      color: token(color-text-on-fill);
+    }
+  }
+}
+
+$calendar-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23616161' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2'/%3E%3Cpath d='M16 2v4M8 2v4M3 10h18'/%3E%3C/svg%3E");
+
+// whole field opens the calendar; the icon is only a visual hint
+[data-date-picker] {
+  padding-right: token(spacing-xl);
+  background: $calendar-icon no-repeat right center;
+  cursor: pointer;
+}

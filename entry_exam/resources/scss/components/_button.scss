@@ -1,0 +1,126 @@
+@use "sass:map";
+@use "../abstracts" as *;
+
+// <x-button variant="primary|secondary|danger|tertiary" size="small|medium|large" shape="square|rounded|pill">
+
+$button-sizes: (
+  small: (padding-x: token(spacing-sm), padding-y: token(spacing-xs), typography: label-2),
+  medium: (padding-x: token(spacing-md), padding-y: token(spacing-sm), typography: body-2),
+  large: (padding-x: token(spacing-lg), padding-y: 12px, typography: body-1),
+);
+
+$button-shapes: (
+  square: token(radius-sm),
+  rounded: token(radius-md),
+  pill: token(radius-pill),
+);
+
+.button {
+  --button-background: #{token(color-bg-surface)};
+  --button-color: #{token(color-text)};
+  --button-border-color: transparent;
+  --button-padding-x: #{token(spacing-md)};
+  --button-padding-y: #{token(spacing-sm)};
+  --button-border-radius: #{token(radius-md)};
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: token(spacing-xs);
+  padding: var(--button-padding-y) var(--button-padding-x);
+  border: 1px solid var(--button-border-color);
+  border-radius: var(--button-border-radius);
+  background: var(--button-background);
+  color: var(--button-color);
+  font-family: inherit;
+  font-weight: map.get($font-weight, semibold);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    background: color-mix(in srgb, var(--button-color) 8%, var(--button-background));
+  }
+
+  &:active {
+    filter: brightness(0.92);
+  }
+
+  &:focus-visible {
+    outline: 2px solid token(color-primary);
+    outline-offset: 2px;
+  }
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+// sizes
+@each $size, $config in $button-sizes {
+  .button-#{$size} {
+    --button-padding-x: #{map.get($config, padding-x)};
+    --button-padding-y: #{map.get($config, padding-y)};
+    @include typography(map.get($config, typography));
+
+    font-weight: map.get($font-weight, semibold);
+  }
+}
+
+// shapes
+@each $shape, $radius in $button-shapes {
+  .button-#{$shape} {
+    --button-border-radius: #{$radius};
+  }
+}
+
+// variants
+.button-primary {
+  --button-background: #{token(color-primary)};
+  --button-color: #{token(color-text-on-fill)};
+  --button-border-color: #{token(color-primary)};
+
+  &:hover {
+    background: color-mix(in srgb, #000 12%, var(--button-background));
+  }
+}
+
+.button-danger {
+  --button-background: #{token(color-danger)};
+  --button-color: #{token(color-text-on-fill)};
+  --button-border-color: #{token(color-danger)};
+
+  &:hover {
+    background: color-mix(in srgb, #000 12%, var(--button-background));
+  }
+}
+
+.button-secondary {
+  --button-background: #{token(color-bg-surface)};
+  --button-color: #{token(color-text)};
+  --button-border-color: #{token(color-border)};
+}
+
+.button-tertiary {
+  --button-background: transparent;
+  --button-color: #{token(color-text-secondary)};
+  --button-padding-x: 0;
+}
+
+// modifiers
+
+// square button holding only an <x-icon> (give it an aria-label)
+.button.is-icon-only {
+  --button-padding-x: var(--button-padding-y);
+
+  .icon {
+    width: 18px;
+    height: 18px;
+  }
+}

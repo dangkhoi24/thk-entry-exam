@@ -1,35 +1,178 @@
-.admin-menu {
-    border-right: solid 1px #808080;
-    width: 277px;
-    height: 100%;
-    padding: 2px;
-    overflow: auto;
-    float: left;
-    text-align: center;
-    font-size: 12px;
-    li {
-        margin: 30px;
+@use "sass:map";
+@use "../abstracts" as *;
+
+// Admin sidebar: left column on desktop, top bar + drop-down menu on mobile
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: token(side-menu-width);
+  height: 100vh;
+  border-right: 1px solid token(color-border);
+  background-color: token(color-bg-surface);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: token(spacing-sm);
+    padding: token(spacing-lg) token(spacing-md);
+
+    // divider under the title (the mobile top bar has its own bottom border)
+    @include up(md) {
+      margin: 0 token(spacing-sm) token(spacing-sm);
+      padding: token(spacing-lg) token(spacing-sm);
+      border-bottom: 1px solid token(color-border);
     }
+  }
+
+  &__brand {
+    color: token(color-text);
+    text-decoration: none;
+  }
+
+  &__toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: token(radius-md);
+    background: transparent;
+    color: token(color-text);
+    cursor: pointer;
+
+    &:hover {
+      background-color: token(color-bg-subtle);
+    }
+
+    .icon {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  &__toggle-close {
+    display: none;
+  }
+
+  &__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    padding: 0 token(spacing-sm) token(spacing-md);
+  }
+
+  &__nav {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    overflow-y: auto;
+  }
+
+  &__footer {
+    display: flex;
+    gap: token(spacing-xs);
+    padding: token(spacing-md) token(spacing-sm) 0;
+    border-top: 1px solid token(color-border);
+  }
+
+  @include down(md) {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid token(color-border);
+
+    &__header {
+      padding: token(spacing-sm) token(spacing-md);
+    }
+
+    &__toggle {
+      display: inline-flex;
+    }
+
+    // drop-down panel under the top bar
+    &__body {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      height: calc(100vh - 100%);
+      padding: token(spacing-sm);
+      border-top: 1px solid token(color-border);
+      background-color: token(color-bg-surface);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(-8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+    }
+
+    &.is-open {
+      .sidebar__body {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+
+      .sidebar__toggle-open {
+        display: none;
+      }
+
+      .sidebar__toggle-close {
+        display: block;
+      }
+    }
+  }
 }
 
-.menu-block {
-    width: 250px;
-    height: 100vh;
-    border: 1px inset;
-    overflow: auto;
-    padding: 10px;
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: token(spacing-md);
+  padding: token(spacing-sm);
+  border-radius: token(radius-md);
+  color: token(color-text);
+  text-decoration: none;
 
-    text-align: left;
-    display: inline-block;
-    h3.title {
-        font-size: 18px;
-        color: gray;
-        text-align: center;
-        margin: 5px;
-        margin-bottom: 50px;
+  &__icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    color: token(color-text-secondary);
+  }
+
+  &__label {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &:hover {
+    background-color: token(color-bg-subtle);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, token(color-primary) 25%, transparent);
+  }
+
+  &.is-selected {
+    background-color: color-mix(in srgb, token(color-text) 8%, transparent);
+    font-weight: map.get($font-weight, semibold);
+
+    .menu-item__icon {
+      color: token(color-text);
     }
-    a.link {
-        color: #0000EE;
-        text-decoration: underline;
-    }
+  }
 }

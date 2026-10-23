@@ -1,0 +1,81 @@
+@use "sass:map";
+@use "../abstracts" as *;
+
+// Result table, same look as artech-ui's Table: row dividers only, quiet header, hover row
+
+.data-table {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid token(color-border);
+  border-radius: token(radius-md);
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  &__head,
+  &__cell {
+    padding: token(spacing-sm) token(spacing-md);
+    border-bottom: 1px solid token(color-border);
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  &__head {
+    height: 40px;
+    color: token(color-text-secondary);
+    white-space: nowrap;
+    @include typography(label-2);
+  }
+
+  &__cell {
+    height: 56px;
+    @include typography(body-2);
+
+    &--action {
+      width: 1%;
+      white-space: nowrap;
+    }
+  }
+
+  tbody tr:last-child &__cell {
+    border-bottom: none;
+  }
+
+  tbody tr:hover &__cell {
+    background-color: token(color-bg-subtle);
+  }
+
+  // thumbnail + text in one cell
+  &__media {
+    display: flex;
+    align-items: center;
+    gap: token(spacing-sm);
+
+    img {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: token(radius-sm);
+    }
+  }
+
+  &__link {
+    color: token(color-text);
+    font-weight: map.get($font-weight, semibold);
+    text-decoration: none;
+
+    &:hover {
+      color: token(color-primary);
+      text-decoration: underline;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: token(spacing-xs);
+  }
+}
