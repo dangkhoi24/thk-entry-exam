@@ -1,0 +1,18 @@
+@use "../abstracts" as *;
+
+// alignment
+.text-left   { text-align: left !important; }
+.text-center { text-align: center !important; }
+.text-right  { text-align: right !important; }
+
+// color
+.text-primary   { color: token(color-text) !important; }
+.text-secondary { color: token(color-text-secondary) !important; }
+.text-danger    { color: token(color-danger) !important; }
+.text-success   { color: token(color-success) !important; }
+
+// decoration
+.line-through { text-decoration: line-through !important; }
+
+// whitespace
+.whitespace-nowrap { white-space: nowrap !important; }

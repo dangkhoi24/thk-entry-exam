@@ -1,0 +1,99 @@
+@use "../abstracts" as *;
+
+// <x-toast>: floating messages at the bottom right
+
+.toast-group {
+  position: fixed;
+  right: token(spacing-lg);
+  bottom: token(spacing-lg);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: token(spacing-sm);
+  pointer-events: none;
+
+  @include down(md) {
+    right: token(spacing-md);
+    bottom: token(spacing-md);
+    left: token(spacing-md);
+  }
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: token(spacing-sm);
+  width: 100%;
+  min-width: 320px;
+  max-width: 480px;
+  padding: token(spacing-md);
+  border-radius: token(radius-md);
+  background: token(color-bg-surface);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  pointer-events: auto;
+  animation: toast-in 0.25s ease-out;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+
+  @include down(md) {
+    min-width: 0;
+    max-width: none;
+  }
+
+  &.is-leaving {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  &__icon {
+    margin-top: 1px;
+  }
+
+  &__description {
+    flex: 1;
+    min-width: 0;
+    @include typography(body-2);
+  }
+
+  &__close {
+    display: flex;
+    flex-shrink: 0;
+    padding: 2px;
+    border: none;
+    border-radius: token(radius-sm);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+
+    .icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.08);
+    }
+  }
+}
+
+// subtle tint over the surface, like artech-ui's default toast
+.toast-positive {
+  background: linear-gradient(token(color-success-bg), token(color-success-bg)), token(color-bg-surface);
+  color: token(color-success);
+}
+
+.toast-negative {
+  background: linear-gradient(token(color-danger-bg), token(color-danger-bg)), token(color-bg-surface);
+  color: token(color-danger);
+}
+
+.toast-neutral {
+  background: token(color-bg-surface);
+  color: token(color-text);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}

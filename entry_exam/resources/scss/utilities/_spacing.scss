@@ -1,0 +1,35 @@
+@use "../abstracts" as *;
+
+@mixin spacing-utils($p: null) {
+  $s: "";
+  @if $p { $s: "#{$p}\\:"; }
+
+  @each $name, $v in $spacing {
+    // gap
+    .#{$s}gap-#{$name}  { gap: $v !important; }
+
+    // padding
+    .#{$s}p-#{$name}   { padding: $v !important; }
+    .#{$s}px-#{$name}  { padding-left: $v !important; padding-right: $v !important; }
+    .#{$s}py-#{$name}  { padding-top: $v !important; padding-bottom: $v !important; }
+    .#{$s}pt-#{$name}  { padding-top: $v !important; }
+    .#{$s}pb-#{$name}  { padding-bottom: $v !important; }
+
+    // margin
+    .#{$s}m-#{$name}   { margin: $v !important; }
+    .#{$s}mx-#{$name}  { margin-left: $v !important; margin-right: $v !important; }
+    .#{$s}my-#{$name}  { margin-top: $v !important; margin-bottom: $v !important; }
+    .#{$s}mt-#{$name}  { margin-top: $v !important; }
+    .#{$s}mb-#{$name}  { margin-bottom: $v !important; }
+    .#{$s}ml-#{$name}  { margin-left: $v !important; }
+    .#{$s}mr-#{$name}  { margin-right: $v !important; }
+  }
+
+  .#{$s}mx-auto { margin-left: auto !important; margin-right: auto !important; }
+}
+
+@include spacing-utils;
+
+@each $p in (md, lg) {
+  @include up($p) { @include spacing-utils($p); }
+}

@@ -1,3 +1,4 @@
+@use "../abstracts" as *;
 @import url('https://fonts.googleapis.com/css2?family=Akaya+Kanadaka&display=swap');
 
 .g-header{
@@ -13,6 +14,15 @@
         font-style: normal;
         text-shadow: 0 2px 5px rgba(0, 0, 0, 0.16);
     }
+    @include down(lg) {
+        padding: 12px token(spacing-lg) 8px;
+    }
+    @include down(md) {
+        padding: 8px token(spacing-md) 4px;
+        a{
+            font-size: 28px;
+        }
+    }
 }
 
 .container{
@@ -23,4 +33,14 @@
     height: auto;
     min-height: 105vh;
     padding: 30px 100px;
+    @include down(lg) {
+        padding: token(spacing-lg);
+    }
+    @include down(md) {
+        padding: token(spacing-md);
+    }
+    img{
+        max-width: 100%;
+        height: auto;
+    }
 }

@@ -1,0 +1,40 @@
+@use "sass:map";
+@use "../abstracts" as *;
+
+// <x-form-field label="..." name="..." required>: label + control + description + error
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: token(spacing-sm);
+  width: 100%;
+
+  &__label {
+    @include typography(label-1);
+    font-weight: map.get($font-weight, semibold);
+    color: token(color-text);
+  }
+
+  &__required {
+    margin-left: 2px;
+    color: token(color-danger);
+  }
+
+  &__control {
+    display: flex;
+    flex-direction: column;
+    gap: token(spacing-sm);
+    width: 100%;
+  }
+
+  &__description {
+    @include typography(caption-1);
+    color: token(color-text-secondary);
+  }
+
+  &__error {
+    @include typography(caption-1);
+    color: token(color-danger);
+  }
+}
+

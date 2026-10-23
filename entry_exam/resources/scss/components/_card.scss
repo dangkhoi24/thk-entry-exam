@@ -1,0 +1,11 @@
+@use "../abstracts" as *;
+
+.card {
+  padding: token(spacing-lg);
+  border-radius: token(radius-lg);
+  background-color: token(color-bg-surface);
+
+  @include down(md) {
+    padding: token(spacing-md);
+  }
+}

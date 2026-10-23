@@ -1,0 +1,21 @@
+@use "../abstracts" as *;
+
+@mixin display-utils($p: null) {
+  $s: "";
+  @if $p { $s: "#{$p}\\:"; }
+
+  .#{$s}block        { display: block !important; }
+  .#{$s}inline-block { display: inline-block !important; }
+  .#{$s}inline       { display: inline !important; }
+  .#{$s}flex         { display: flex !important; }
+  .#{$s}inline-flex  { display: inline-flex !important; }
+  .#{$s}grid         { display: grid !important; }
+  .#{$s}hidden       { display: none !important; }
+  .#{$s}table-cell   { display: table-cell !important; }
+}
+
+@include display-utils;
+
+@each $p in (md, lg) {
+  @include up($p) { @include display-utils($p); }
+}

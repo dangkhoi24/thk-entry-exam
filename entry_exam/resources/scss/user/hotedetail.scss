@@ -1,3 +1,4 @@
+@use "../abstracts" as *;
 @import url('https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap');
 
 .container{
@@ -8,6 +9,7 @@
     img{
         margin: auto;
         display: block;
+        width: 640px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16);
     }
     .hotel_title{
@@ -19,5 +21,15 @@
         text-shadow: 0 2px 5px rgba(0, 0, 0, 0.16);
         line-height: 60px;
         padding: 40px 0 20px;
+    }
+    @include down(md) {
+        .hotedetail_container{
+            padding: token(spacing-lg) token(spacing-md);
+        }
+        .hotel_title{
+            font-size: 24px;
+            line-height: 1.6;
+            padding: token(spacing-lg) 0 token(spacing-sm);
+        }
     }
 }

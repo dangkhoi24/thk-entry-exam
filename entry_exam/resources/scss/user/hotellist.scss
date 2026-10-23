@@ -1,3 +1,4 @@
+@use "../abstracts" as *;
 @import url('https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap');
 
 .container{
@@ -19,7 +20,16 @@
             margin: 25px 0;
             display: flex;
         }
+        .left_wrapper{
+            flex: 0 1 640px;
+            min-width: 0;
+            img{
+                display: block;
+                width: 100%;
+            }
+        }
         .right_wrapper{
+            flex: 1;
             padding: 0 0 0 35px;
         }
         .hotel_link:hover{
@@ -28,6 +38,33 @@
             }
             .hotel_title{
                 color: #8d6e63;
+            }
+        }
+        @include down(lg) {
+            padding: token(spacing-lg);
+            .left_wrapper{
+                flex-basis: 45%;
+            }
+            .hotel_title{
+                font-size: 28px;
+                line-height: 1.6;
+            }
+        }
+        @include down(md) {
+            padding: token(spacing-md);
+            .hotellist_wrapper{
+                flex-direction: column;
+                padding: token(spacing-md);
+                margin: token(spacing-md) 0;
+            }
+            .left_wrapper{
+                flex-basis: auto;
+            }
+            .right_wrapper{
+                padding: token(spacing-sm) 0 0;
+            }
+            .hotel_title{
+                font-size: 22px;
             }
         }
     }

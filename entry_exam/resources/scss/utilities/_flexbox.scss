@@ -1,0 +1,38 @@
+@use "../abstracts" as *;
+
+@mixin flexbox-utils($p: null) {
+  $s: "";
+  @if $p { $s: "#{$p}\\:"; }
+
+  // direction
+  .#{$s}flex-row      { flex-direction: row !important; }
+  .#{$s}flex-col      { flex-direction: column !important; }
+
+  // wrap
+  .#{$s}flex-wrap     { flex-wrap: wrap !important; }
+  .#{$s}flex-nowrap   { flex-wrap: nowrap !important; }
+
+  // flex shorthand
+  .#{$s}flex-1        { flex: 1 1 0% !important; }
+  .#{$s}flex-auto     { flex: 1 1 auto !important; }
+  .#{$s}flex-none     { flex: none !important; }
+  .#{$s}shrink-0      { flex-shrink: 0 !important; }
+
+  // align-items
+  .#{$s}items-start    { align-items: flex-start !important; }
+  .#{$s}items-center   { align-items: center !important; }
+  .#{$s}items-end      { align-items: flex-end !important; }
+  .#{$s}items-stretch  { align-items: stretch !important; }
+
+  // justify-content
+  .#{$s}justify-start   { justify-content: flex-start !important; }
+  .#{$s}justify-center  { justify-content: center !important; }
+  .#{$s}justify-end     { justify-content: flex-end !important; }
+  .#{$s}justify-between { justify-content: space-between !important; }
+}
+
+@include flexbox-utils;
+
+@each $p in (md, lg) {
+  @include up($p) { @include flexbox-utils($p); }
+}

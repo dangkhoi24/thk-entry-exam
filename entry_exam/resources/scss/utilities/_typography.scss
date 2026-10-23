@@ -1,0 +1,15 @@
+@use "../abstracts" as *;
+
+// Typography classes: <p class="body-2">, <h1 class="title-2">
+@each $name, $_ in $typography {
+  .#{$name} {
+    @include typography($name);
+  }
+}
+
+// Weight modifiers, combine with a typography class: class="body-1 font-bold"
+@each $name, $value in $font-weight {
+  .font-#{$name} {
+    font-weight: $value !important;
+  }
+}

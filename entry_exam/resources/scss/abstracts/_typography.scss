@@ -1,0 +1,39 @@
+@use "sass:map";
+
+$font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
+
+$font-weight: (
+  regular: 400,
+  medium: 500,
+  semibold: 600,
+  bold: 700,
+);
+
+// Single source of truth for text styles.
+// Use the generated classes (.title-2, .body-1 ...) in templates,
+// and the typography() mixin inside component styles.
+$typography: (
+  title-1:    (weight: bold,     font-size: 32px, line-height: 44px),
+  title-2:    (weight: bold,     font-size: 28px, line-height: 38px),
+  title-3:    (weight: bold,     font-size: 24px, line-height: 32px),
+  heading-1:  (weight: semibold, font-size: 22px, line-height: 30px),
+  heading-2:  (weight: semibold, font-size: 20px, line-height: 28px),
+  headline-1: (weight: semibold, font-size: 18px, line-height: 26px),
+  headline-2: (weight: semibold, font-size: 17px, line-height: 24px),
+  body-1:     (weight: regular,  font-size: 16px, line-height: 24px),
+  body-2:     (weight: regular,  font-size: 15px, line-height: 22px),
+  label-1:    (weight: regular,  font-size: 14px, line-height: 20px),
+  label-2:    (weight: regular,  font-size: 13px, line-height: 18px),
+  caption-1:  (weight: regular,  font-size: 12px, line-height: 16px),
+);
+
+@mixin typography($name) {
+  @if not map.has-key($typography, $name) {
+    @error "Unknown typography: #{$name}";
+  }
+
+  $variant: map.get($typography, $name);
+  font-size: map.get($variant, font-size);
+  font-weight: map.get($font-weight, map.get($variant, weight));
+  line-height: map.get($variant, line-height);
+}

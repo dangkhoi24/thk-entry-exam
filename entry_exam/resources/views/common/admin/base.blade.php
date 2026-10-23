@@ -7,13 +7,19 @@
         <title>THK Holdings Vietman Hanoi</title>
         {{-- individual CSS --}}
         {{-- @vite('resources/css/reset.css') --}}
-        @vite('resources/css/admin/base.css')
+        @vite('resources/scss/admin/base.scss')
         @vite('resources/scss/admin/side-menu.scss')
         @yield('custom_css')
     </head>
     <body>
-        <x-admin.side-menu />
-        @yield('main_contents')
+        <div class="admin-layout">
+            <x-admin.side-menu />
+            <main class="admin-layout__main">
+                @yield('main_contents')
+            </main>
+        </div>
+        <x-toast />
+        @vite('resources/js/admin/app.js')
         @yield('page_js')
     </body>
 </html>

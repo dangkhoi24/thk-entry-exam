@@ -1,0 +1,69 @@
+@use "../abstracts" as *;
+
+// <x-input>: .input is the visual box, .input__field is the native control
+
+.input {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  padding: 0 token(spacing-md);
+  border: 1px solid token(color-border);
+  border-radius: token(radius-md);
+  background-color: token(color-bg-surface);
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &.is-sm { min-height: 34px; }
+  &.is-md { min-height: 40px; }
+  &.is-lg { min-height: 48px; }
+
+  &:hover {
+    border-color: token(color-border-strong);
+  }
+
+  &:focus-within {
+    border-color: token(color-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, token(color-primary) 20%, transparent);
+  }
+
+  &.is-invalid,
+  .is-invalid & {
+    border-color: token(color-danger);
+  }
+
+  // read only (confirm screen): same box, no interaction
+  &:has(.input__field[readonly]) {
+    border-color: token(color-border);
+    background-color: token(color-bg-subtle);
+    box-shadow: none;
+  }
+
+  &__icon {
+    align-self: center;
+    width: 18px;
+    height: 18px;
+    margin-right: token(spacing-sm);
+    color: token(color-text-secondary);
+  }
+
+  &__field {
+    flex: 1;
+    min-width: 0;
+    padding: token(spacing-sm) 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: token(color-text);
+    font-family: inherit;
+    @include typography(body-2);
+
+    &::placeholder {
+      color: token(color-text-placeholder);
+    }
+
+    &[type="file"] {
+      cursor: pointer;
+      @include typography(label-1);
+    }
+  }
+}

@@ -1,0 +1,27 @@
+@use "../abstracts" as *;
+
+// Page templates: <x-templates.default-page>, <x-templates.list-page>, <x-templates.form-page>
+// (layout inside the templates uses utility classes)
+
+.page {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: token(spacing-md);
+  width: 100%;
+  max-width: token(content-max-width);
+  margin: 0 auto;
+
+  @include up(md) {
+    gap: token(spacing-lg);
+  }
+
+  &__title {
+    color: token(color-text);
+    @include typography(heading-1);
+
+    @include up(md) {
+      @include typography(title-2);
+    }
+  }
+}
