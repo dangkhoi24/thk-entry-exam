@@ -42,6 +42,10 @@ If you have any comments about this exam, please write them down here.
 Thank you for reviewing. All required fields and both optional fields are implemented.
 
 [Setup]
+- With a recent Docker (Compose with "bake"), `sail up` may stop with
+  "additional privileges requested: pass --allow=fs.read=../docker/vite/Dockerfile".
+  This comes from the vite Dockerfile being outside the project folder. Start it with:
+  `BUILDX_BAKE_ENTITLEMENTS_FS=0 ./vendor/bin/sail up -d`
 - Run `./vendor/bin/sail php artisan migrate --seed` (adds the `bookings` table and 50 sample bookings).
 - New npm packages (flatpickr, tom-select) are installed by the vite container (`npm install` on start).
 - The admin screens are translated with Laravel localization (lang/ja, lang/en).
