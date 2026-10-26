@@ -68,12 +68,27 @@ Thank you for reviewing. All required fields and both optional fields are implem
   shown again with a message instead of the confirm screen.
 
 [Hotel delete]
-- JavaScript confirm dialog before deleting.
+- A confirmation dialog (opened with JavaScript) asks before deleting; the hotel is deleted only by its "削除" button.
 - A hotel that has bookings cannot be deleted (foreign key), a message is shown instead.
 
 [Bookings (optional)]
 - The ERD column `chekin_time` is treated as a typo and named `checkin_time`.
 - Check-in / check-out are searched by date (a date picker), not by exact date and time.
+
+[Back-end]
+- Validation in Form Requests (app/Http/Requests/Admin), messages in lang/{ja,en}/validation.php.
+- Image files are handled by App\Services\HotelImageService on the "hotel_images" disk (public/assets/img).
+  Files and DB are kept consistent: a stored image is removed again if the DB write fails,
+  and an old image is deleted only after the record was updated / deleted.
+- The edit content between the screens is App\Support\HotelEditDraft (kept in the session).
+- Search conditions are model scopes (partial match with escaped wildcards, prefecture).
+- Create / update / delete write logs (storage/logs/laravel.log) with the handler name and hotel id;
+  failures are logged as errors before the exception is re-thrown.
+- The route URLs / names given in the exam were kept as they are.
+
+[Tests]
+- `./vendor/bin/sail artisan test` : feature tests for hotel search / create / edit / delete and booking search
+  (tests/Feature/Admin, run on the "testing" database created by Sail).
 
 [Front-end]
 - SCSS: design tokens, typography, utility classes and components (resources/scss).

@@ -64,7 +64,8 @@ return [
         'confirm_title' => 'Confirm changes',
         'confirm_message' => 'The hotel will be updated as follows. Are you sure?',
         'no_changes' => 'Nothing has been changed',
-        'delete_confirm' => "Delete hotel \":name\".\nAre you sure?",
+        'delete_title' => 'Delete hotel',
+        'delete_confirm' => 'Hotel ":name" will be deleted. Are you sure?',
 
         'message' => [
             'created' => 'Hotel ":name" has been registered',

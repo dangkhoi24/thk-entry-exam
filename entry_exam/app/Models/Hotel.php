@@ -2,91 +2,77 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasContainsScope;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Hotel extends Model
 {
-    /**
-     * Directory (under public/assets/img) for uploaded hotel images
-     */
-    public const IMAGE_DIR = 'hotel';
+    use HasContainsScope;
+    use HasFactory;
 
     /**
      * Rows per page on the admin search result
      */
     public const PER_PAGE = 20;
 
-    /**
-     * @var string
-     */
     protected $primaryKey = 'hotel_id';
 
-    /**
-     * @var array
-     */
-    protected $guarded = ['hotel_id'];
+    protected $fillable = [
+        'hotel_name',
+        'prefecture_id',
+        'file_path',
+    ];
 
-    /**
-     * @return BelongsTo
-     */
+    protected function casts(): array
+    {
+        return [
+            'prefecture_id' => 'integer',
+        ];
+    }
+
     public function prefecture(): BelongsTo
     {
         return $this->belongsTo(Prefecture::class, 'prefecture_id', 'prefecture_id');
     }
 
-    /**
-     * @return HasMany
-     */
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class, 'hotel_id', 'hotel_id');
     }
 
     /**
-     * Search hotel by partial hotel name and/or prefecture
-     *
-     * @param string|null $hotelName
-     * @param int|null $prefectureId
-     * @return LengthAwarePaginator
+     * A null prefecture adds no condition
      */
-    static public function getHotelList(?string $hotelName, ?int $prefectureId): LengthAwarePaginator
+    public function scopeInPrefecture(Builder $query, ?int $prefectureId): void
     {
-        $result = Hotel::query()
-            ->when($hotelName !== null, function ($query) use ($hotelName) {
-                // escape LIKE wildcards so "%" and "_" are searched literally
-                $query->where('hotel_name', 'like', '%' . addcslashes($hotelName, '\\%_') . '%');
-            })
-            ->when($prefectureId !== null, function ($query) use ($prefectureId) {
-                $query->where('prefecture_id', $prefectureId);
-            })
+        if ($prefectureId !== null) {
+            $query->where('prefecture_id', $prefectureId);
+        }
+    }
+
+    /**
+     * Search hotel by partial hotel name and/or prefecture (admin search result)
+     */
+    public static function getHotelList(?string $hotelName, ?int $prefectureId): LengthAwarePaginator
+    {
+        return self::query()
+            ->whereContains('hotel_name', $hotelName)
+            ->inPrefecture($prefectureId)
             ->with('prefecture')
             ->orderBy('hotel_id')
             ->paginate(self::PER_PAGE)
             ->withQueryString();
-
-        return $result;
-    }
-
-    /**
-     * Whether the image was uploaded from admin (not a shared sample image)
-     *
-     * @return bool
-     */
-    public function hasUploadedImage(): bool
-    {
-        return $this->file_path !== null && str_starts_with($this->file_path, self::IMAGE_DIR . '/');
     }
 
     /**
      * Override serializeDate method to customize date format
-     *
-     * @param  \DateTimeInterface  $date
-     * @return string
      */
-    protected function serializeDate(\DateTimeInterface $date)
+    protected function serializeDate(\DateTimeInterface $date): string
     {
         return $date->format('Y-m-d H:i:s');
     }

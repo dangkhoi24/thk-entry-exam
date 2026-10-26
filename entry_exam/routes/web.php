@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TopController;
-use App\Http\Controllers\HotelController;
-use App\Http\Controllers\Admin\TopController as AdminTopController;
-use App\Http\Controllers\Admin\HotelController as AdminHotelController;
 use App\Http\Controllers\Admin\BookingController as AdminBookingController;
+use App\Http\Controllers\Admin\HotelController as AdminHotelController;
+use App\Http\Controllers\Admin\TopController as AdminTopController;
+use App\Http\Controllers\HotelController;
+use App\Http\Controllers\TopController;
 use App\Http\Middleware\SetLocale;
+use Illuminate\Support\Facades\Route;
 
 /** user screen */
 Route::get('/', [TopController::class, 'index'])->name('top');

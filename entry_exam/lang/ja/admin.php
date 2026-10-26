@@ -64,7 +64,8 @@ return [
         'confirm_title' => '変更内容の確認',
         'confirm_message' => '以下の内容で更新します。よろしいですか？',
         'no_changes' => '変更された項目はありません',
-        'delete_confirm' => "ホテル「:name」を削除します。\n本当によろしいですか？",
+        'delete_title' => 'ホテルの削除',
+        'delete_confirm' => 'ホテル「:name」を削除します。本当によろしいですか？',
 
         'message' => [
             'created' => 'ホテル「:name」を登録しました',

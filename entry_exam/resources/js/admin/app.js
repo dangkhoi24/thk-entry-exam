@@ -1,7 +1,7 @@
 // Admin screens:
 //   [data-sidebar-toggle]     -> open / close the sidebar menu on mobile
 //   [data-toast]              -> auto dismiss / close button for flash toasts
-//   [data-modal-cancel]       -> Esc key closes the dialog (goes to its cancel URL)
+//   .modal                    -> Esc / [data-modal-close] close the dialog (server-rendered one goes to its cancel URL)
 //   <form data-dirty-check>   -> enables its submit buttons once something is changed
 //   <input data-date-picker>  -> flatpickr calendar (opens when the field is clicked / focused)
 //   <select data-select>      -> Tom Select dropdown with search
@@ -28,15 +28,29 @@ if (sidebar && sidebarToggle) {
     });
 }
 
-const modal = document.querySelector('[data-modal-cancel]');
+// server-rendered dialog: Esc goes to its cancel URL
+const serverModal = document.querySelector('[data-modal-cancel]');
 
-if (modal) {
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-            window.location.href = modal.dataset.modalCancel;
-        }
-    });
-}
+// dialogs opened by JavaScript: [data-modal-close] or Esc hides them
+const closeModal = (modal) => { modal.hidden = true; };
+
+document.addEventListener('click', (event) => {
+    const closer = event.target.closest('[data-modal-close]');
+    if (closer) {
+        closeModal(closer.closest('.modal'));
+    }
+});
+
+document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') {
+        return;
+    }
+    if (serverModal) {
+        window.location.href = serverModal.dataset.modalCancel;
+        return;
+    }
+    document.querySelectorAll('.modal:not([hidden])').forEach(closeModal);
+});
 
 document.querySelectorAll('form[data-dirty-check]').forEach((form) => {
     const submitButtons = document.querySelectorAll(`button[form="${form.id}"], #${form.id} button[type="submit"]`);

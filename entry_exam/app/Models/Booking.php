@@ -2,33 +2,41 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasContainsScope;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Booking extends Model
 {
+    use HasContainsScope;
+    use HasFactory;
+
     /**
-     * @var string
+     * Rows per page on the admin search result
      */
+    public const PER_PAGE = 20;
+
     protected $primaryKey = 'booking_id';
 
-    /**
-     * @var array
-     */
-    protected $guarded = ['booking_id'];
-
-    /**
-     * @var array
-     */
-    protected $casts = [
-        'checkin_time' => 'datetime',
-        'checkout_time' => 'datetime',
+    protected $fillable = [
+        'hotel_id',
+        'customer_name',
+        'customer_contact',
+        'checkin_time',
+        'checkout_time',
     ];
 
-    /**
-     * @return BelongsTo
-     */
+    protected function casts(): array
+    {
+        return [
+            'hotel_id' => 'integer',
+            'checkin_time' => 'datetime',
+            'checkout_time' => 'datetime',
+        ];
+    }
+
     public function hotel(): BelongsTo
     {
         return $this->belongsTo(Hotel::class, 'hotel_id', 'hotel_id');
@@ -37,43 +45,27 @@ class Booking extends Model
     /**
      * Search booking by customer name, contact, check-in date and check-out date
      *
-     * @param array $filter keys: customer_name, customer_contact, checkin_date, checkout_date
-     * @return LengthAwarePaginator
+     * @param  array{customer_name?: ?string, customer_contact?: ?string, checkin_date?: ?string, checkout_date?: ?string}  $filter
      */
-    static public function getBookingList(array $filter): LengthAwarePaginator
+    public static function getBookingList(array $filter): LengthAwarePaginator
     {
-        $customerName = $filter['customer_name'] ?? null;
-        $customerContact = $filter['customer_contact'] ?? null;
         $checkinDate = $filter['checkin_date'] ?? null;
         $checkoutDate = $filter['checkout_date'] ?? null;
 
-        $result = Booking::query()
-            ->when($customerName !== null, function ($query) use ($customerName) {
-                $query->where('customer_name', 'like', '%' . addcslashes($customerName, '\\%_') . '%');
-            })
-            ->when($customerContact !== null, function ($query) use ($customerContact) {
-                $query->where('customer_contact', 'like', '%' . addcslashes($customerContact, '\\%_') . '%');
-            })
-            ->when($checkinDate !== null, function ($query) use ($checkinDate) {
-                $query->whereDate('checkin_time', $checkinDate);
-            })
-            ->when($checkoutDate !== null, function ($query) use ($checkoutDate) {
-                $query->whereDate('checkout_time', $checkoutDate);
-            })
+        return self::query()
+            ->whereContains('customer_name', $filter['customer_name'] ?? null)
+            ->whereContains('customer_contact', $filter['customer_contact'] ?? null)
+            ->when($checkinDate !== null, fn ($query) => $query->whereDate('checkin_time', $checkinDate))
+            ->when($checkoutDate !== null, fn ($query) => $query->whereDate('checkout_time', $checkoutDate))
             ->orderBy('checkin_time')
-            ->paginate(Hotel::PER_PAGE)
+            ->paginate(self::PER_PAGE)
             ->withQueryString();
-
-        return $result;
     }
 
     /**
      * Override serializeDate method to customize date format
-     *
-     * @param  \DateTimeInterface  $date
-     * @return string
      */
-    protected function serializeDate(\DateTimeInterface $date)
+    protected function serializeDate(\DateTimeInterface $date): string
     {
         return $date->format('Y-m-d H:i:s');
     }

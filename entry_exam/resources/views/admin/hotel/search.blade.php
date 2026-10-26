@@ -47,24 +47,24 @@
                     <thead>
                         <tr>
                             <th class="data-table__head">{{ __('admin.hotel.field.hotel_name') }}</th>
-                            <th class="data-table__head hidden md:table-cell">{{ __('admin.hotel.field.prefecture') }}</th>
-                            <th class="data-table__head hidden lg:table-cell">{{ __('admin.hotel.field.created_at') }}</th>
-                            <th class="data-table__head hidden md:table-cell text-right">{{ __('admin.hotel.field.updated_at') }}</th>
+                            <th class="data-table__head">{{ __('admin.hotel.field.prefecture') }}</th>
+                            <th class="data-table__head">{{ __('admin.hotel.field.created_at') }}</th>
+                            <th class="data-table__head text-right">{{ __('admin.hotel.field.updated_at') }}</th>
                             <th class="data-table__head"></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($hotelList as $hotel)
                             <tr>
-                                <td class="data-table__cell">
+                                <td class="data-table__cell whitespace-nowrap">
                                     <div class="data-table__media">
                                         <img src="/assets/img/{{ $hotel->file_path }}" alt="" loading="lazy">
                                         <a class="data-table__link" href="{{ route('hotelDetail', ['hotel_id' => $hotel->hotel_id]) }}" target="_blank">{{ $hotel->hotel_name }}</a>
                                     </div>
                                 </td>
-                                <td class="data-table__cell hidden md:table-cell whitespace-nowrap">{{ $hotel->prefecture->display_name }}</td>
-                                <td class="data-table__cell hidden lg:table-cell whitespace-nowrap text-secondary">{{ $hotel->created_at->format('Y-m-d H:i') }}</td>
-                                <td class="data-table__cell hidden md:table-cell whitespace-nowrap text-secondary text-right">{{ $hotel->updated_at->format('Y-m-d H:i') }}</td>
+                                <td class="data-table__cell whitespace-nowrap">{{ $hotel->prefecture->display_name }}</td>
+                                <td class="data-table__cell whitespace-nowrap text-secondary">{{ $hotel->created_at->format('Y-m-d H:i') }}</td>
+                                <td class="data-table__cell whitespace-nowrap text-secondary text-right">{{ $hotel->updated_at->format('Y-m-d H:i') }}</td>
                                 <td class="data-table__cell data-table__cell--action">
                                     <div class="data-table__actions">
                                         <x-button
@@ -103,17 +103,43 @@
             <x-pagination :paginator="$hotelList" />
         @endif
     </x-templates.list-page>
+
+    {{-- delete confirmation, opened by the script below --}}
+    <x-modal id="delete-modal" :title="__('admin.hotel.delete_title')" :open="false">
+        <p class="body-2" data-delete-message></p>
+
+        <x-slot:footer>
+            <x-button data-modal-close>{{ __('admin.hotel.action.cancel') }}</x-button>
+            <x-button variant="danger" data-delete-submit>{{ __('admin.hotel.action.delete') }}</x-button>
+        </x-slot:footer>
+    </x-modal>
 @endsection
 
 @section('page_js')
     <script>
-        // ask before deleting; submit only when "OK" is selected
-        document.querySelectorAll('.js-delete-form').forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-                if (!window.confirm(form.dataset.confirmMessage)) {
+        // ask in a dialog before deleting; submit only when "delete" is pressed
+        (function () {
+            var modal = document.getElementById('delete-modal');
+            var message = modal.querySelector('[data-delete-message]');
+            var submitButton = modal.querySelector('[data-delete-submit]');
+            var targetForm = null;
+
+            document.querySelectorAll('.js-delete-form').forEach(function (form) {
+                form.addEventListener('submit', function (event) {
                     event.preventDefault();
+                    targetForm = form;
+                    message.textContent = form.dataset.confirmMessage;
+                    modal.hidden = false;
+                    submitButton.focus();
+                });
+            });
+
+            submitButton.addEventListener('click', function () {
+                if (targetForm) {
+                    submitButton.disabled = true;
+                    targetForm.submit();
                 }
             });
-        });
+        })();
     </script>
 @endsection

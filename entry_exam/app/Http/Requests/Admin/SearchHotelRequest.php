@@ -13,9 +13,6 @@ class SearchHotelRequest extends FormRequest
      */
     protected $redirectRoute = 'adminHotelSearchPage';
 
-    /**
-     * @return bool
-     */
     public function authorize(): bool
     {
         return true;
@@ -23,8 +20,6 @@ class SearchHotelRequest extends FormRequest
 
     /**
      * At least one of hotel name or prefecture is required
-     *
-     * @return array
      */
     public function rules(): array
     {

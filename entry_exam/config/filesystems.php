@@ -45,6 +45,15 @@ return [
             'throw' => false,
         ],
 
+        // hotel images: served directly from public/assets/img (paths are stored relative to it)
+        'hotel_images' => [
+            'driver' => 'local',
+            'root' => public_path('assets/img'),
+            'url' => '/assets/img',
+            'visibility' => 'public',
+            'throw' => true,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

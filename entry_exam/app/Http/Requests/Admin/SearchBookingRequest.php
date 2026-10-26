@@ -14,9 +14,6 @@ class SearchBookingRequest extends FormRequest
      */
     protected $redirectRoute = 'adminBookingSearchPage';
 
-    /**
-     * @return bool
-     */
     public function authorize(): bool
     {
         return true;
@@ -24,8 +21,6 @@ class SearchBookingRequest extends FormRequest
 
     /**
      * At least one condition is required
-     *
-     * @return array
      */
     public function rules(): array
     {

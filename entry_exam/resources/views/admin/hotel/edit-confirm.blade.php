@@ -18,9 +18,9 @@
         </x-slot:actions>
 
         @include('admin.hotel.partials.form-fields', [
-            'hotelName' => $draft['hotel_name'],
-            'prefectureId' => $draft['prefecture_id'],
-            'imagePath' => $draft['tmp_file_path'] ?? $hotel->file_path,
+            'hotelName' => $draft->hotelName,
+            'prefectureId' => $draft->prefectureId,
+            'imagePath' => $draft->tmpImagePath ?? $hotel->file_path,
             'isImageRequired' => false,
         ])
     </x-templates.form-page>
@@ -40,13 +40,13 @@
             </div>
         @endforeach
 
-        @if ($draft['tmp_file_path'] !== null)
+        @if ($draft->tmpImagePath !== null)
             <div class="flex flex-col gap-xs">
                 <p class="label-1 text-secondary">{{ __('admin.hotel.field.hotel_image') }}</p>
                 <div class="flex items-center gap-sm">
                     <img class="modal__thumbnail" src="/assets/img/{{ $hotel->file_path }}" alt="">
                     <span class="text-secondary">&rarr;</span>
-                    <img class="modal__thumbnail" src="/assets/img/{{ $draft['tmp_file_path'] }}" alt="">
+                    <img class="modal__thumbnail" src="/assets/img/{{ $draft->tmpImagePath }}" alt="">
                 </div>
             </div>
         @endif

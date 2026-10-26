@@ -5,11 +5,7 @@
 @section('main_contents')
     @php
         // the save button is enabled from the start only when there is an unsaved edit
-        $isDirty = session()->hasOldInput() || ($draft !== null && (
-            $draft['hotel_name'] !== $hotel->hotel_name
-            || $draft['prefecture_id'] !== (int) $hotel->prefecture_id
-            || $draft['tmp_file_path'] !== null
-        ));
+        $isDirty = session()->hasOldInput() || ($draft?->hasChangesFrom($hotel) ?? false);
     @endphp
 
     <x-templates.form-page
@@ -25,9 +21,9 @@
             @csrf
             <input type="hidden" name="hotel_id" value="{{ $hotel->hotel_id }}">
             @include('admin.hotel.partials.form-fields', [
-                'hotelName' => old('hotel_name', $draft['hotel_name'] ?? $hotel->hotel_name),
-                'prefectureId' => old('prefecture_id', $draft['prefecture_id'] ?? $hotel->prefecture_id),
-                'imagePath' => $draft['tmp_file_path'] ?? $hotel->file_path,
+                'hotelName' => old('hotel_name', $draft?->hotelName ?? $hotel->hotel_name),
+                'prefectureId' => old('prefecture_id', $draft?->prefectureId ?? $hotel->prefecture_id),
+                'imagePath' => $draft?->tmpImagePath ?? $hotel->file_path,
                 'isImageRequired' => false,
             ])
         </form>

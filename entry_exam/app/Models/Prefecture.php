@@ -18,25 +18,13 @@ class Prefecture extends Model
      */
     protected $guarded = ['prefecture_id'];
 
-    /**
-     * Included in toArray() so search results (arrays) can use it too
-     *
-     * @var array
-     */
-    protected $appends = ['display_name'];
-
-    /**
-     * @return HasMany
-     */
     public function hotel(): HasMany
     {
-        return $this->hasMany(Hotel::class);
+        return $this->hasMany(Hotel::class, 'prefecture_id', 'prefecture_id');
     }
 
     /**
      * Prefecture name in the current locale: 東京都 (ja) / Tokyo (other)
-     *
-     * @return Attribute
      */
     protected function displayName(): Attribute
     {

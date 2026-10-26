@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 use DateTime;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class BookingSeeder extends Seeder
 {
@@ -26,9 +26,10 @@ class BookingSeeder extends Seeder
         for ($i = 0; $i < 50; $i++) {
             // check-in at 15:00, stay 1-5 nights, check-out at 10:00
             $checkin = (new DateTime($faker->dateTimeBetween('-1 month', '+2 months')->format('Y-m-d')))->setTime(15, 0);
-            $checkout = (clone $checkin)->modify('+' . $faker->numberBetween(1, 5) . ' days')->setTime(10, 0);
-            // booked before check-in
-            $createdAt = $faker->dateTimeBetween((clone $checkin)->modify('-2 months'), min($checkin, new DateTime()));
+            $checkout = (clone $checkin)->modify('+'.$faker->numberBetween(1, 5).' days')->setTime(10, 0);
+            // booked within 2 months before check-in, and not in the future
+            $bookedUntil = min($checkin, new DateTime);
+            $createdAt = $faker->dateTimeBetween((clone $bookedUntil)->modify('-2 months'), $bookedUntil);
 
             $booking_data[] = [
                 'hotel_id' => $hotelIds->random(),

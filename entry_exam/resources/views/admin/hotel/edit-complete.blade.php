@@ -10,8 +10,8 @@
     >
         <div class="flex flex-col flex-1 items-center justify-center gap-sm py-xl text-center">
             <x-icon name="check-circle" class="text-success" />
-            <p class="headline-1">{{ __('admin.hotel.message.updated', ['name' => $hotelName]) }}</p>
-            <a class="body-2 text-secondary" href="{{ route('hotelDetail', ['hotel_id' => $hotelId]) }}" target="_blank">{{ __('admin.hotel.action.view_detail') }}</a>
+            <p class="headline-1">{{ __('admin.hotel.message.updated', ['name' => $hotel->hotel_name]) }}</p>
+            <a class="body-2 text-secondary" href="{{ route('hotelDetail', ['hotel_id' => $hotel->hotel_id]) }}" target="_blank">{{ __('admin.hotel.action.view_detail') }}</a>
         </div>
     </x-templates.form-page>
 @endsection
